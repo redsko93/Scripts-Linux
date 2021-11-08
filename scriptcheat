@@ -170,57 +170,75 @@ echo "Début du script, passage de la V0 à la V1 imminent"
 sleep 5
 clear
 
-echo "\n__________________________"
+echo "
+__________________________"
 echo "Installation des utilitaires"
-echo "__________________________\n"
+echo "__________________________
+"
 install_utils
 sleep 5
 
-echo "\n__________________________"
+echo "
+__________________________"
 echo "Installation de cheat"
-echo "__________________________\n"
+echo "__________________________
+"
 install_cheat
 sleep 5
 
-echo "\n__________________________"
+echo "
+__________________________"
 echo "Creation des répertoires"
-echo "__________________________\n"
+echo "__________________________
+"
 create_dirs
 sleep 5
 
-echo "\n__________________________"
+echo "
+__________________________"
 echo "Configuration de cheat"
-echo "__________________________\n"
+echo "__________________________
+"
 configure_cheat
 sleep 5
 
-echo "\n__________________________"
+echo "
+__________________________"
 echo "Installion de cheatsheets"
-echo "__________________________\n"
+echo "__________________________
+"
 install_cheatsheets
 sleep 5
 
-echo "\n__________________________"
+echo "
+__________________________"
 echo "Création dess répertoires .config"
-echo "__________________________\n"
+echo "__________________________
+"
 config_dir_making
 sleep 5
 
-echo "\n__________________________"
+echo "
+__________________________"
 echo "Creation du groupe commun"
-echo "__________________________\n"
+echo "__________________________
+"
 group_create
 sleep 5
 
-echo "\n__________________________"
+echo "
+__________________________"
 echo "Lier les configurations"
-echo "__________________________\n"
+echo "__________________________
+"
 config_linking
 sleep 5
 
-echo "\n__________________________"
+echo "
+__________________________"
 echo "Création de l'utilisateur esgi"
-echo "__________________________\n"
+echo "__________________________
+"
 create_esgi
 echo "L'utilisateur esgi à pour mdp Pa55w.rd"
 sleep 5
