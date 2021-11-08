@@ -132,6 +132,7 @@ function group_create
 
 function create_esgi()
 {
+    #création du compte esgi avec pouir mdp Pa55w.rd comme demandé
     useradd -m -G 10000 -s /bin/bash esgi
     usermod -aG sudo esgi
     echo -e "Pa55w.rd\nPa55w.rd" |passwd esgi
@@ -165,68 +166,61 @@ function config_linking
 	done
 }
 
-echo "Installing utils"
-echo "__________________________"
+echo "Début du script, passage de la V0 à la V1 imminent"
+sleep 5
+clear
+
+echo "\n__________________________"
+echo "Installation des utilitaires"
+echo "__________________________\n"
 install_utils
 sleep 5
 
-
-echo "Installing cheat"
-echo "__________________________"
+echo "\n__________________________"
+echo "Installation de cheat"
+echo "__________________________\n"
 install_cheat
 sleep 5
 
-
-echo "Creating directories"
-echo "__________________________"
+echo "\n__________________________"
+echo "Creation des répertoires"
+echo "__________________________\n"
 create_dirs
 sleep 5
 
-
-echo "Configuring cheat"
-echo "__________________________"
+echo "\n__________________________"
+echo "Configuration de cheat"
+echo "__________________________\n"
 configure_cheat
 sleep 5
 
-
-echo "Installing cheatsheets"
-echo "__________________________"
+echo "\n__________________________"
+echo "Installion de cheatsheets"
+echo "__________________________\n"
 install_cheatsheets
 sleep 5
 
-
-echo "Making .config directories"
-echo "__________________________"
+echo "\n__________________________"
+echo "Création dess répertoires .config"
+echo "__________________________\n"
 config_dir_making
 sleep 5
 
-
-echo "Creating group commun"
-echo "__________________________"
+echo "\n__________________________"
+echo "Creation du groupe commun"
+echo "__________________________\n"
 group_create
 sleep 5
 
-echo "Linking configurations"
-echo "__________________________"
+echo "\n__________________________"
+echo "Lier les configurations"
+echo "__________________________\n"
 config_linking
 sleep 5
 
-echo "creer esgi avec mdp Pa55w.rd"
-echo "__________________________"
+echo "\n__________________________"
+echo "Création de l'utilisateur esgi"
+echo "__________________________\n"
 create_esgi
+echo "L'utilisateur esgi à pour mdp Pa55w.rd"
 sleep 5
-
-echo "Generer users"
-echo "__________________________"
-#create_users
-sleep 5
-
-#if  [ $# -gt 0 ]; then
-#	echo "Creating users"
-#	echo "__________________________"
-#	for user in "$@"; do
-#		create_users $user
-#	done
-#	sleep 5
-#	clear
-#fi
