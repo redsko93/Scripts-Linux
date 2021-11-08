@@ -228,7 +228,7 @@ sleep 5
 
 echo "
 __________________________"
-echo "Lier les configurations"
+echo "Linker les configurations"
 echo "__________________________
 "
 config_linking
@@ -240,5 +240,9 @@ echo "Création de l'utilisateur esgi"
 echo "__________________________
 "
 create_esgi
+ech ""
 echo "L'utilisateur esgi à pour mdp Pa55w.rd"
 sleep 5
+
+echo ""
+echo "Script terminé, passage réussi! :)"
