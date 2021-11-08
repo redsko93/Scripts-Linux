@@ -213,9 +213,9 @@ config_linking
 sleep 5
 
 
-echo "Generer password"
+echo "creer esgi avec mdp Pa55w.rd"
 echo "__________________________"
-#password_generator
+create_esgi
 sleep 5
 
 echo "Generer users"
