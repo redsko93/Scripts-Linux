@@ -206,16 +206,14 @@ echo "__________________________"
 group_create
 sleep 5
 
+echo "creer esgi avec mdp Pa55w.rd"
+echo "__________________________"
+create_esgi
+sleep 5
 
 echo "Linking configurations"
 echo "__________________________"
 config_linking
-sleep 5
-
-
-echo "creer esgi avec mdp Pa55w.rd"
-echo "__________________________"
-create_esgi
 sleep 5
 
 echo "Generer users"
