@@ -112,7 +112,7 @@ EOF
 
 function make_user_bashrc
 {
-	echo "umask 007" >> /home/$1/.bashrc
+	echo "umask 007" >> /home/"$1"/.bashrc
 	cat >> /home/$1/.bashrc << EOF
 export PS1="\[\033[38;5;14m\]\n[\t]\u@\h \w\n\\$ :\[$(tput sgr0)\] \[$(tput sgr0)\]"
 alias ll='ls -rtl'
@@ -156,7 +156,7 @@ function config_linking
 			usermod -a -G sudo $user
 			mkdir /home/$user/.config
 			ln -vs /opt/COMMUN/cheat /home/$user/.config/cheat
-			chown -R $user /home/$user/.config
+			chown -R "$user" /home/$user/.config
 			make_user_bashrc $user
 		fi
 	done
@@ -201,62 +201,62 @@ echo "Installing utils"
 echo "__________________________"
 install_utils
 sleep 5
-clear
+
 
 echo "Installing cheat"
 echo "__________________________"
 install_cheat
 sleep 5
-clear
+
 
 echo "Creating directories"
 echo "__________________________"
 create_dirs
 sleep 5
-clear
+
 
 echo "Configuring cheat"
 echo "__________________________"
 configure_cheat
 sleep 5
-clear
+
 
 echo "Installing cheatsheets"
 echo "__________________________"
 install_cheatsheets
 sleep 5
-clear
+
 
 echo "Making .config directories"
 echo "__________________________"
 config_dir_making
 sleep 5
-clear
+
 
 echo "Creating group commun"
 echo "__________________________"
 group_create
 sleep 5
-clear
+
 
 echo "Linking configurations"
 echo "__________________________"
 config_linking
 sleep 5
-clear
+
 
 echo "Installing motd"
 echo "__________________________"
 banner_install
 sleep 5
-clear
 
-if  [ $# -gt 0 ]; then
-	echo "Creating users"
-	echo "__________________________"
-	for user in "$@"; do
-		create_users $user
-	done
-	sleep 5
-	clear
-fi
+
+#if  [ $# -gt 0 ]; then
+#	echo "Creating users"
+#	echo "__________________________"
+#	for user in "$@"; do
+#		create_users $user
+#	done
+#	sleep 5
+#	clear
+#fi
