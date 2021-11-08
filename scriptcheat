@@ -130,6 +130,13 @@ function group_create
 	chmod -Rv 2770 /opt/COMMUN/cheat/cheatsheets/personal
 }
 
+function create_esgi()
+{
+    useradd -m -G 10000 -s /bin/bash esgi
+    usermod -aG sudo esgi
+    echo -e "Pa55w.rd\nPa55w.rd" |passwd esgi
+}
+
 function config_linking
 {
 	# Créer les liens symboliques pour les utilisateurs
@@ -156,21 +163,6 @@ function config_linking
 			make_user_bashrc $user
 		fi
 	done
-}
-
-function password_generator
-{
-	# génère un mot de passe de 10 charactères
-	password=$(< /dev/urandom tr -dc a-zA-Z0-9 | head -c10)
-	echo $1":"$password >> passwords
-}
-
-function create_users
-{
-	# Créé un utilisateur
-	useradd -G sudo,commun -s /bin/bash --create-home $1
-	password_generator $1
-	yes $password | passwd $1
 }
 
 echo "Installing utils"
@@ -223,12 +215,12 @@ sleep 5
 
 echo "Generer password"
 echo "__________________________"
-password_generator
+#password_generator
 sleep 5
 
 echo "Generer users"
 echo "__________________________"
-create_users
+#create_users
 sleep 5
 
 #if  [ $# -gt 0 ]; then
