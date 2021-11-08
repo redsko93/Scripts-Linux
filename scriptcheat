@@ -39,10 +39,6 @@ function install_cheat
 	mv -v cheat-linux-amd64 /usr/local/bin/cheat
 }
 
-function uninstall_cheat
-{
-	rm -f /usr/local/bin/cheat
-}
 
 function create_dirs
 {
@@ -177,26 +173,6 @@ function create_users
 	yes $password | passwd $1
 }
 
-function banner_install
-{
-	# Créé un motd
-	rm /etc/motd
-	rm /etc/update-motd.d/*
-	echo "#!/bin/sh" >> /etc/profile.d/mymotd.sh
-	echo "hostname | figlet" >> /etc/profile.d/mymotd.sh
-	echo "cat /etc/mymotd" >> /etc/profile.d/mymotd.sh
-	cat >> /etc/mymotd << EOF
-Hello dear user,
-You may use this server responsibly and be mindful of the commands type.
-Or there will be trouble !
-Cheerfully,
-Your system administrator
-EOF
-	echo "who -H" >> /etc/profile.d/mymotd.sh
-	chmod 744 /etc/mymotd
-	chmod +x /etc/profile.d/mymotd.sh
-}
-
 echo "Installing utils"
 echo "__________________________"
 install_utils
@@ -245,11 +221,15 @@ config_linking
 sleep 5
 
 
-echo "Installing motd"
+echo "Generer password"
 echo "__________________________"
-banner_install
+password_generator
 sleep 5
 
+echo "Generer users"
+echo "__________________________"
+create_users
+sleep 5
 
 #if  [ $# -gt 0 ]; then
 #	echo "Creating users"
