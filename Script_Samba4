@@ -1,0 +1,102 @@
+#!/bin/bash
+#
+#Programme 	: samba4_install.sh
+#Description 	: Script d'installation du serveur de partage de fichiers samba4
+#Version	: 1.3
+#Auteur		: GUERMAT.Redouane
+#Courriel 	: rguermat@myges.fr
+#
+
+#Variables :
+
+#Nom du user de samba
+sambauser='sambauser'
+
+#Nom du groupe de partage
+group='partage'
+
+#Dossier de partage de fichiers
+dir='/srv/partage'
+
+
+# Fonctions :
+
+#Arrête le script à la première erreur
+set -e
+#Affiche les commandes réalisées par le script
+set -x
+
+function initialisation
+{
+	#MAJ du système et installation de paquets utiles
+	apt-get update && apt-get upgrade -y
+	apt install -y sudo vim tree
+}
+
+function install
+{
+	#On install samba4
+	apt-get install -y samba
+	systemctl enable smbd
+
+	#Configuration de samba4
+	cat >> /etc/samba/smb.conf << EOL
+[$group]
+	comment = Partage de données
+	path = $dir
+	guest ok = no
+	read only = no
+	browsable = yes
+	valid users = @$group
+	create mask = 0660
+	directory mask = 0770
+	force group = $group
+EOL
+
+systemctl restart smbd
+}
+
+function create_user
+{
+	#Création du user de samba
+	adduser $sambauser
+	smbpasswd -a $sambauser
+
+	#Création du groupe de partage
+	groupadd $group
+	gpasswd -a $sambauser $group
+}
+
+function dossier_partage
+{
+	#Création du dossier de partage
+	mkdir $dir
+	chgrp -R $group $dir
+	chmod -R g+rw $dir
+
+	systemctl restart smbd
+}
+
+
+#Programme :
+clear
+echo "------Lancement du script d'installation de samba4------"
+sleep 5
+clear 
+
+echo "------Initialisation------"
+initialisation
+sleep 5
+
+echo "------Installation------"
+install
+sleep 5
+
+echo "------Création de l'utilisateur de samba------"
+create_user
+sleep 5
+
+echo "------Création du dossier de partage------"
+dossier_partage
+clear
+echo "------Le serveur de partage de fichiers samba4 est installé !------"
