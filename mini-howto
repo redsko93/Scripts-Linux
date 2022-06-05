@@ -1,0 +1,105 @@
+. Installation de Samba 4 pour Debian 11;
+
+. Création d’un nouveau domaine et intégration d’un poste client Windows ;
+
+. Création d’un utilisateur, d’un groupe, d’une unité organisationnelle ;
+
+. Création d’utilisateurs en masse à l’aide de scripts ;
+
+. Configuration et paramétrage du NTP signé ;
+
+. Intégration d’un serveur membre Windows, vérification de la cohérence des horloges ;
+
+. Identification des composants Samba 4 à sauvegarder et à restaurer ;
+
+. Indicateurs à surveiller pour le bon fonctionnement global de Samba 4 ;
+
+. Configuration des stratégies de mots de passe du domaine
+
+
+Samba 4
+
+Création d’un user ESGI
+
+#useradd -m -s /bin/bash esgi
+#usermod -aG sudo esgi
+#echo -e "Pa55w.rd\nPa55w.rd" |passwd esgi
+
+
+Installation avec script 
+
+ntp signé
+
+#apt-get install ntpdate ntp
+#ntpdate -bu pool.ntp.org
+
+dans /etc/ntp.conf :
+server 127.127.1.0
+fudge 127.127.1.0
+
+ntpsigndsocket /var/lib/samba/ntp_signd
+restrict default mssntp
+
+
+On crée le dossier:
+#mkdir /var/lib/samba/ntp_signd
+#chgrp ntp /var/lib/samba/ntp_signd
+#systemctl restart ntp
+
+
+Domain
+
+On installe ce qu’il faut pour l’AD
+#sudo apt-get install samba krb5-user krb5-config winbind libpam-winbind libnss-winbind
+domaine de Kerberos: SAMBA.LAN
+
+On arrête les services
+#sudo systemctl stop samba-ad-dc.service smbd.service nmbd.service winbind.service
+#sudo systemctl disable samba-ad-dc.service smbd.service nmbd.service winbind.service
+
+Puis on renomme la conf de samba car une nouvelle sera créée:
+#sudo mv /etc/samba/smb.conf /etc/samba/smb.conf.old
+
+On remplace la conf de krb5
+#sudo mv /etc/krb5.conf /etc/krb5.conf.initial
+#sudo ln –s /var/lib/samba/private/krb5.conf /etc/
+
+on relance samba domain controller:
+#systemctl unmask samba-ad-dc
+#systemctl start samba-ad-dc
+#systemctl enable samba-ad-dc
+
+#on passe la machine en contrôleur de domaine:
+samba-tool domain provision --server-role=dc --use-rfc2307 --dns-backend=SAMBA_INTERNAL \
+	--realm=SAMBA.LAN --domain=SAMBA --option="dns forwarder=191.168.1.150"
+
+DNS
+vi /etc/samba/smb.conf
+dns forwarder = 192.168.1.150
+
+vi /etc/resolv.conf
+nameserver 192.168.1.150
+search samba.lan
+domain samba.lan
+
+vi /etc/systemd/resolved.conf
+DNSStubListener=no
+
+On arrête resolved :
+#systemctl stop systemd-resolved
+#systemctl disabled systemd-resolved
+
+#samba-tool dns zonecreate sambaAD 1.168.192-in-addr-arpa –username=administrator
+
+script création de masse
+username='<new_user_name>'
+useradd -m $username
+(echo "<password_for_user>"; sleep 1; echo "<password_for_user>";) | passwd $username
+(echo "<password_for_user>"; sleep 1; echo "<password_for_user>" ) | sudo smbpasswd -s -a $username
+
+sources:
+
+https://www.jjworld.fr/active-directory-linux-avec-samba-4/ 
+https://samba.tranquil.it/doc/fr/samba_config_server/debian/server_install_ntp_debian.html 
+https://fr.linux-console.net/?p=829
+https://www.youtube.com/watch?v=U66QlpabkVI
